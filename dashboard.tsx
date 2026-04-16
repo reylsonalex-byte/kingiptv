@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -15,11 +15,12 @@ export default function Dashboard() {
 
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [user, setUser] = useState<any>(null);
-
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const cache = useRef<any>({});
+  // ✅ TAMANHO DOS CARDS (ANTES DE USAR)
+  const screenWidth = Dimensions.get('window').width;
+  const itemWidth = (screenWidth - 40) / 3;
 
   // 🔐 AUTH CORRIGIDO
   useEffect(() => {
@@ -32,8 +33,7 @@ export default function Dashboard() {
           return;
         }
 
-        const parsed = JSON.parse(stored);
-        setUser(parsed);
+        setUser(JSON.parse(stored));
       } catch (e) {
         router.replace('/');
       } finally {
@@ -44,7 +44,7 @@ export default function Dashboard() {
     checkAuth();
   }, []);
 
-  // 📡 FETCH SIMPLES (EXEMPLO)
+  // 📡 BUSCA DADOS
   useEffect(() => {
     if (!user) return;
 
@@ -57,9 +57,10 @@ export default function Dashboard() {
         const res = await fetch(url);
         const json = await res.json();
 
-        setData(json);
+        setData(Array.isArray(json) ? json : []);
       } catch (err) {
-        console.log('Erro ao buscar dados:', err);
+        console.log('Erro:', err);
+        setData([]);
       } finally {
         setLoading(false);
       }
@@ -68,58 +69,51 @@ export default function Dashboard() {
     fetchData();
   }, [user]);
 
-  // 🔒 BLOQUEIA RENDER ATÉ VALIDAR LOGIN
+  // 🔒 BLOQUEIA RENDER
   if (!isAuthReady) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" color="#7C3AED" />
       </View>
     );
   }
 
-  const screenWidth = Dimensions.get('window').width;
-  const itemWidth = (screenWidth - 40) / 3;
-  const renderItem = ({ item }: any) => (
-    <TouchableOpacity
-      onPress={() =>
-        router.push({
-          pathname: '/player',
-          params: { id: item.stream_id },
-        })
-      }
-      style={{
-        width: itemWidth,
-        marginBottom: 12,
-        backgroundColor: '#1F1F1F',
-        padding: 10,
-        borderRadius: 8,
-      }}
-    >
-      <Text style={{ color: '#fff' }}>{item.name}</Text>
-    </TouchableOpacity>
-  );
+  // 🎬 ITEM
+  const renderItem = ({ item }: any) => {
+    if (!item) return null;
 
-  const screenWidth = Dimensions.get('window').width;
-  const itemWidth = (screenWidth - 40) / 3;
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          router.push({
+            pathname: '/player',
+            params: { id: item.stream_id },
+          })
+        }
+        style={{
+          width: itemWidth,
+          marginBottom: 12,
+          backgroundColor: '#1F1F1F',
+          padding: 10,
+          borderRadius: 8,
+        }}
+      >
+        <Text style={{ color: '#fff' }}>
+          {item.name || 'Sem nome'}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#0F0F0F' }}>
-      {/* 🔥 HEADER CORRIGIDO */}
+      {/* ✅ HEADER SEM BLOQUEAR TOQUE */}
       <View
         pointerEvents="box-none"
         style={{
           paddingTop: 40,
           paddingBottom: 10,
           alignItems: 'center',
-          backgroundColor: '#0F0F0F',
-          zIndex: 10,
-          elevation: 10,
         }}
       >
         <Text style={{ color: '#fff', fontSize: 18 }}>
@@ -127,7 +121,6 @@ export default function Dashboard() {
         </Text>
       </View>
 
-      {/* 📦 LISTA */}
       {loading ? (
         <ActivityIndicator
           size="large"
@@ -136,14 +129,15 @@ export default function Dashboard() {
         />
       ) : (
         <FlatList
-  data={data || []}
-  keyExtractor={(item, index) =>
-    item?.stream_id?.toString() || index.toString()
-  }
-  renderItem={renderItem}
-  numColumns={3}
-  contentContainerStyle={{
-    padding: 10,
-  }}
-/>
+          data={data}
+          keyExtractor={(item, index) =>
+            item?.stream_id?.toString() || index.toString()
+          }
+          renderItem={renderItem}
+          numColumns={3}
+          contentContainerStyle={{ padding: 10 }}
+        />
+      )}
+    </View>
+  );
 }
