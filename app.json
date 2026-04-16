@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "King IPTV",
+    "slug": "king-client-iptv",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/images/logo.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./app/images/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0B0F"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./app/images/logo.png",
+        "backgroundColor": "#0B0B0F"
+      },
+      "package": "com.reylsondev.kingiptv",
+      "permissions": [
+        "INTERNET"
+      ],
+      "usesCleartextTraffic": true
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4cbe05aa-1e9a-4b6d-96cd-eac8b79e05cb"
+      }
+    },
+    "plugins": [
+      "expo-video",
+      "expo-router"
+    ],
+    "owner": "reylsondev"
+  }
+}
