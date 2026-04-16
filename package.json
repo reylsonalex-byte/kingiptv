@@ -5,89 +5,22 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
-    "web": "expo start --web",
-    "electron": "electron main.js",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/metro-runtime": "~55.0.9",
-    "@expo/vector-icons": "^15.0.2",
-    "@react-native-async-storage/async-storage": "2.2.0",
-    "axios": "^1.15.0",
-    "expo": "^55.0.15",
-    "expo-clipboard": "~55.0.13",
-    "expo-constants": "~55.0.14",
-    "expo-intent-launcher": "~55.0.12",
-    "expo-linear-gradient": "~55.0.13",
-    "expo-router": "~55.0.12",
-    "expo-screen-orientation": "~55.0.13",
-    "expo-splash-screen": "~55.0.18",
-    "expo-status-bar": "~55.0.5",
-    "expo-video": "~55.0.15",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "axios": "^1.7.0",
+    "expo": "~52.0.0",
+    "expo-constants": "~17.0.8",
+    "expo-linear-gradient": "~14.0.0",
+    "expo-router": "~4.0.0",
+    "expo-status-bar": "~2.0.0",
+    "expo-video": "~2.0.0",
     "firebase": "^11.0.0",
-    "iptv-playlist-parser": "^0.15.2",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "react-firebase-hooks": "^5.1.1",
-    "react-native": "0.83.4",
-    "react-native-safe-area-context": "~5.6.2",
-    "react-native-screens": "~4.23.0",
-    "react-native-web": "^0.21.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@electron-forge/cli": "^7.0.0",
-    "@electron-forge/maker-squirrel": "^7.0.0",
-    "@electron-forge/maker-zip": "^7.0.0",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.0.0",
-    "@electron-forge/plugin-fuses": "^7.0.0",
-    "@electron/fuses": "^1.0.0",
-    "@types/react": "^19.0.0",
-    "@types/react-native": "^0.73.0",
-    "babel-plugin-module-resolver": "^5.0.2",
-    "electron": "^30.0.0",
-    "typescript": "^5.3.3"
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "asar": true,
-        "name": "KingClient",
-        "executableName": "KingClient",
-        "ignore": [
-          "\\.expo",
-          "\\.tsx?$",
-          "tsconfig\\.json",
-          "babel\\.config\\.js"
-        ]
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "kingclient",
-            "setupExe": "KingClient-Setup.exe"
-          }
-        }
-      ],
-      "plugins": [
-        {
-          "name": "@electron-forge/plugin-auto-unpack-natives",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/plugin-fuses",
-          "config": {
-            "version": "1.0.0",
-            "fuses": {
-              "runAsNode": false,
-              "accessibleFreezedExternalFiles": false,
-              "deleteAllCodeSigningAttributes": false
-            }
-          }
-        }
-      ]
-    }
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-native": "0.76.9",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.4.0"
   }
 }
